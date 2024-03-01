@@ -114,6 +114,7 @@ int init_monitor(int argc, char *argv[]) {
   init_log();
 
   /* Test the implementation of the `CPU_state' structure. */
+  //gen random num to test reg
   reg_test();
 
 #ifdef DIFF_TEST
@@ -122,12 +123,15 @@ int init_monitor(int argc, char *argv[]) {
 #endif
 
   /* Load the image to memory. */
+  //load img to fixed memory address: 0x10000
   load_img();
 
   /* Initialize this virtual computer system. */
+  //set eip=0x100000, make sure CPU execute from the addr
   restart();
 
   /* Compile the regular expressions. */
+  //make sure every regex work well
   init_regex();
 
   /* Initialize the watchpoint pool. */

@@ -38,7 +38,11 @@ static inline int check_reg_index(int index) {
   assert(index >= 0 && index < 8);
   return index;
 }
-
+/*
+reg_l:Return the reg identified by regsl
+reg_w:Return the reg identified by regsw
+reg_b:Return the reg identified by regsb
+*/
 #define reg_l(index) (cpu.gpr[check_reg_index(index)]._32)
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])

@@ -76,6 +76,7 @@ static int cmd_help(char *args) {
   return 0;
 }
 
+//chief func used for implement "user interaction" 
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
     cmd_c(NULL);
