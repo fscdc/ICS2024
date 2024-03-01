@@ -96,157 +96,200 @@ static int cmd_help(char *args) {
 }
 
 static int cmd_si(char* args){
-	char* arg = strtok(args, " ");
-	if(arg==NULL){
-		cpu_exec(1);
-	}
-	else{
-		bool success;
-		int num = expr(arg, &success);
-		if(!success){
-			printf("Invalid si num.\n");
-			return 0;
-		}
-		if(strtok(NULL," ") != NULL){
-			printf("Too many arguments!\n");
-			return 0;
-		}
-		cpu_exec(num);
-	}
-	return 0;
+    char* arg = strtok(args, " ");
+    
+    // If no argument is provided, execute one instruction by default.
+    if(arg == NULL){
+        cpu_exec(1);
+    }
+    else{
+        // Convert the argument to an integer to get the number of instructions to execute.
+        int num = atoi(arg);
+        
+        // Check if the number is valid (non-negative).
+        if(num < 0){
+            printf("Invalid args, try again.\n");
+            return 0;
+        }
+        
+        // Ensure there are no additional arguments.
+        if(strtok(NULL, " ") != NULL){
+            printf("Too many args, try again!\n");
+            return 0;
+        }
+        
+        // Execute the specified number of instructions.
+        cpu_exec(num);
+    }
+    return 0;
 }
+
 
 static int cmd_info(char* args){
-	char* arg = strtok(args, " ");
-	if(arg == NULL){
-		printf("Too few arguments.\n");
-	}
-	else{
-		if(strtok(NULL, " ") != NULL){
-			printf("Too many arguments.\n");
-			return 0;
-		}
-	if(strcmp(arg,"r")==0){
-		printf("eax: 0x%08x.\n", cpu.eax);
-		printf("ecx: 0x%08x.\n", cpu.ecx);
-		printf("edx: 0x%08x.\n", cpu.edx);
-		printf("ebx: 0x%08x.\n", cpu.ebx);
-		printf("esp: 0x%08x.\n", cpu.esp);
-		printf("ebp: 0x%08x.\n", cpu.ebp);
-		printf("esi: 0x%08x.\n", cpu.esi);
-		printf("edi: 0x%08x.\n", cpu.edi);
-		printf("NEMU eflags:\n");
-		printf("ZF:%d\n",cpu.eflags.ZF);
-		printf("SF:%d\n",cpu.eflags.SF);
-		printf("OF:%d\n",cpu.eflags.OF);
-		printf("CF:%d\n",cpu.eflags.CF);
-		printf("IF:%d\n",cpu.eflags.IF);
-	}
-	else if(strcmp(arg,"w")==0){
-		show_wp();
-	}
-	}
-	return 0;
+    char* arg = strtok(args, " ");
+    
+    // Check if the subcommand is provided.
+    if(arg == NULL){
+        printf("Subcommand is required.\n");
+    }
+    else{
+        // Ensure that only one argument is provided.
+        if(strtok(NULL, " ") != NULL){
+            printf("Too many args, try again!\n");
+            return 0;
+        }
+        
+        // Handle the 'r' subcommand to display register values.
+        if(strcmp(arg, "r") == 0){
+            printf("eax: 0x%08x.\n", cpu.eax);
+            printf("ecx: 0x%08x.\n", cpu.ecx);
+            printf("edx: 0x%08x.\n", cpu.edx);
+            printf("ebx: 0x%08x.\n", cpu.ebx);
+            printf("esp: 0x%08x.\n", cpu.esp);
+            printf("ebp: 0x%08x.\n", cpu.ebp);
+            printf("esi: 0x%08x.\n", cpu.esi);
+            printf("edi: 0x%08x.\n", cpu.edi);
+            printf("eip: 0x%08X\n", cpu.eip);
+        }
+        // Handle the 'w' subcommand to display watchpoint information.
+        else if(strcmp(arg, "w") == 0){
+            show_wp();
+        }
+        // Handle unknown subcommands.
+        else{
+            printf("Unknown subcommand '%s'.\n", arg);
+        }
+    }
+    return 0;
 }
+
 
 static int cmd_p(char *args) {
-  uint32_t i;
-  bool success;
-
-
+  // Check if arguments are provided.
   if (args == NULL) {
-    printf("Exception: Expression field EXPR is required.\n");
+    printf("Args is required.\n");
+    return 0;
   }
-  else {
-    i = expr(args, &success, false);
-    if (success)
-      printf("Result = %d\n       = 0x%08X\n", i, i);
+  
+  uint32_t result;
+  bool success;
+  
+  // Evaluate the expression passed as arguments.
+  result = expr(args, &success, false);
+  
+  // If the expression is successfully evaluated, print the result in both decimal and hexadecimal.
+  if (success) {
+    printf("Result = %d\n       = 0x%08X\n", result, result);
+  } else {
+    printf("Failed to evaluate the expression.\n");
   }
+  
   return 0;
 }
 
 
-static int cmd_x(char* args){
-	char* arg = strtok(args, " ");
-	if(arg == NULL){
-		printf("Too few arguments!\n");
-	}
-	bool success;
-	int num = expr(arg, &success);
-	if(!success){
-		printf("Invalid cmd_x num.\n");
-		return 0;
-	}
-	arg = strtok(NULL, " ");
-	if(arg == NULL){
-		printf("Too few arguments!\n");
-		return 0;
-	}
-	if(strtok(NULL," ") != NULL){
-		printf("Too many arguments!\n");
-		return 0;
-	}
-	vaddr_t vaddr = expr(arg, &success);
-	if(!success){
-		printf("Invalid cmd_x address!\n");
-		return 0;
-	}
-	for(int i = 0; i < num; i++){
-		uint32_t data = vaddr_read(vaddr + 4 * i, 4);
-		printf("0x%08x ", vaddr + 4 * i);
-		for(int j = 0; j < 3; j++){
-			printf("0x%02x ", data & 0xff);
-			data = data >> 8;
-		}
-		printf("0x%02x\n", data & 0xff);
-	}
-	return 0;
+static int cmd_x(char* args) {
+    char* arg = strtok(args, " ");
+    if(arg == NULL) {
+        printf("Args is required.\n");
+        return 0;
+    }
+
+    bool success;
+    int num = expr(arg, &success); // Evaluates the expression for the number of locations.
+    if(!success) {
+        printf("Error: Invalid number of locations.\n");
+        return 0;
+    }
+
+    arg = strtok(NULL, " ");
+    if(arg == NULL) {
+        printf("Error: Missing memory address.\n");
+        return 0;
+    }
+
+    if(strtok(NULL, " ") != NULL) {
+        printf("Too many args, try again!\n");
+        return 0;
+    }
+
+    vaddr_t vaddr = expr(arg, &success); // Evaluates the expression for the memory address.
+    if(!success) {
+        printf("Error: Invalid memory address.\n");
+        return 0;
+    }
+
+    // Iterate through the specified number of memory locations, reading and printing each.
+    for(int i = 0; i < num; i++) {
+        uint32_t data = vaddr_read(vaddr + 4 * i, 4);
+        printf("Memory[0x%08x]: ", vaddr + 4 * i);
+        for(int j = 0; j < 4; j++) {
+            printf("%02x ", (data >> (8 * j)) & 0xff);
+        }
+        printf("\n");
+    }
+    return 0;
 }
+
 
 static int cmd_w(char* args){
-  char* arg = strtok(args, " ");
-  if (arg == NULL) {
-    printf("Too few arguments!\n");
-    return 0;
-  }
-  char* sub = strtok(NULL, " ");
-  while (sub != NULL) {
-    strcat(arg, sub);
-    sub = strtok(NULL, " ");
-  }
-  bool success;
-  WP* wp = new_wp();
-  // printf("%d\n", wp->NO);
-  wp->expr = (char*)malloc(strlen(arg)*sizeof(char));
-  memset(wp->expr, 0, strlen(arg));
-  strcpy(wp->expr, arg);
-  // printf("%s\n", wp->expr);
-  wp->value = expr(arg, &success);
-  printf("Set a watchpoint %d on %s.\n", wp->NO, wp->expr);
-  return 0;
+    // Check if the argument for the watchpoint expression is provided.
+    if (args == NULL) {
+        printf("Args is required.\n");
+        return 0;
+    }
 
+    // Concatenate all arguments into a single expression string.
+    char expression[256] = "";
+    char* token = strtok(args, " ");
+    while (token != NULL) {
+        strcat(expression, token);
+        token = strtok(NULL, " ");
+    }
+
+    // Initialize a new watchpoint.
+    bool success;
+    WP* wp = new_wp();
+    wp->expr = strdup(expression); // Use strdup to duplicate the expression string.
+    wp->value = expr(wp->expr, &success);
+
+    if (!success) {
+        printf("Error: Invalid expression for watchpoint.\n");
+        free_wp(wp->NO); // Clean up the newly created but invalid watchpoint.
+        return 0;
+    }
+
+    printf("Watchpoint %d set on %s.\n", wp->NO, wp->expr);
+    return 0;
 }
+
 
 static int cmd_d(char* args) {
-  char* arg = strtok(args, " ");
-  if(arg == NULL) {
-    printf("Too few arguments.\n");
+    if(args == NULL) {
+        printf("Args is required.\n");
+        return 0;
+    }
+
+    // Ensure that only one argument is provided.
+    if(strtok(NULL, " ") != NULL) {
+        printf("Error: Only one argument expected.\n");
+        return 0;
+    }
+
+    // Parse the argument as the watchpoint number.
+    bool success;
+    int wp_no = expr(args, &success);
+    if (!success || wp_no < 0 || wp_no >= 32) { // Validate the watchpoint number.
+        printf("Error: Invalid watchpoint number. Valid range is 0-31.\n");
+        return 0;
+    }
+
+    // Delete the specified watchpoint.
+    free_wp(wp_no);
+    printf("Watchpoint %d deleted.\n", wp_no);
     return 0;
-  }
-  if(strtok(NULL, " ") != NULL) {
-    printf("Too many arguments.\n");
-    return 0;
-  }
-  bool success;
-  int n = expr(arg, &success);
-  if (n >= 32) {
-    printf("Only 32 watchpoints(No: 0-31) provided.\n");
-    return 0;
-  }
-  free_wp(n);
-  printf("Successfully delete watchpoint %d.\n", n);
-  return 0;
 }
+
 
 
 //chief func used for implement "user interaction" 
