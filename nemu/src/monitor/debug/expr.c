@@ -288,7 +288,7 @@ bool check_parentheses(int start, int end) {
 }
 
 
-int find_right_parenthesis(int start, int end) {
+int find_right_parenthese(int start, int end) {
   int depth = 0; // Depth of nested parentheses
   for (int i = start; i <= end; i++) {
     if (tokens[i].type == TK_LP) depth++;
@@ -472,7 +472,7 @@ uint32_t expr(char *e, bool *success) {
         tokens[i].type = TK_NEG; 
       }
       // Change '*' to pointer if it's at the start or not correctly preceded.
-      else if (tokens[i].type == TK_MUL && (isStart || noNumericPrev && noRPBeforeMul)) {
+      else if (tokens[i].type == TK_MUL && (isStart || (noNumericPrev && noRPBeforeMul))) {
         tokens[i].type = TK_POI; 
       }
     }

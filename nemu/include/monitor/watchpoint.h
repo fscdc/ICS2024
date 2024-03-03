@@ -10,7 +10,7 @@ typedef struct watchpoint {
   /* TODO: Add more members if necessary */
   int value;
   char* expr;
-
+  bool used;
 } WP;
 
 void init_wp_pool();
