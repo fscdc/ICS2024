@@ -61,7 +61,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
 
-  /* TODO: Add more commands --finish*/
+  /* TODO: Add more commands */
   {"si", "Single-step debug(args:N)", cmd_si},
   {"info", "Print information of reg or watchpoint(args:r/w)", cmd_info},
   {"p", "Calculate the expr(args:expr)", cmd_p},
@@ -153,7 +153,7 @@ static int cmd_info(char* args){
         }
         // Handle the 'w' subcommand to display watchpoint information.
         else if(strcmp(arg, "w") == 0){
-            show_wp();
+            print_wp();
         }
         // Handle unknown subcommands.
         else{
@@ -171,15 +171,14 @@ static int cmd_p(char *args) {
     return 0;
   }
   
-  uint32_t result;
   bool success;
   
   // Evaluate the expression passed as arguments.
-  result = expr(args, &success, false);
+  uint32_t result = expr(args, &success);
   
-  // If the expression is successfully evaluated, print the result in both decimal and hexadecimal.
+  // If the expression is successfully evaluated, print the result.
   if (success) {
-    printf("Result = %d\n       = 0x%08X\n", result, result);
+    printf("Result = %d\n", result);
   } else {
     printf("Failed to evaluate the expression.\n");
   }
