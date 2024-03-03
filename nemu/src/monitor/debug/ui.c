@@ -265,24 +265,35 @@ static int cmd_w(char* args){
 
 static int cmd_d(char* args) {
   char* arg = strtok(args, " ");
+  
+  // If no argument is provided, notify the user and exit the command.
   if(arg == NULL) {
     printf("Too few args.\n");
     return 0;
   }
+  
+  // If there's more than one argument, notify the user and exit the command.
   if(strtok(NULL, " ") != NULL) {
     printf("Too many args.\n");
     return 0;
   }
+  
+  // Evaluate the argument as an expression to get the watchpoint number.
   bool success;
-  int n = expr(arg, &success);
-  if (n<0 || n >= 32) {
-    printf("Only 32 watchpoints(No: 0-31) provided.\n");
-    return 0;
+  int n = expr(arg, &success); 
+  
+  // Validate the obtained watchpoint number.
+  if (n < 0 || n >= 32) { 
+    printf("Error: Invalid watchpoint number.\n");
+    return 0; 
   }
-  free_wp(n);
-  printf("Successfully delete watchpoint %d.\n", n);
+  
+  // Proceed to delete the watchpoint with the obtained number.
+  free_wp(n); 
+  printf("Watchpoint %d deleted successfully.\n", n);
   return 0;
 }
+
 
 
 
