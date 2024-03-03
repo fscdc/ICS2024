@@ -109,7 +109,7 @@ void free_wp(int no){
   }
 }
 
-void show_wp() {
+void print_wp() {
   WP* curr = head;
   if (head == NULL) {
     printf("No watchpoints.\n");
