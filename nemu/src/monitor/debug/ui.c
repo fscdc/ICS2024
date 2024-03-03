@@ -264,29 +264,24 @@ static int cmd_w(char* args){
 
 
 static int cmd_d(char* args) {
-    if(args == NULL) {
-        printf("Args is required.\n");
-        return 0;
-    }
-
-    // Ensure that only one argument is provided.
-    if(strtok(NULL, " ") != NULL) {
-        printf("Error: Only one argument expected.\n");
-        return 0;
-    }
-
-    // Parse the argument as the watchpoint number.
-    bool success;
-    int wp_no = expr(args, &success);
-    if (!success || wp_no < 0 || wp_no >= 32) { // Validate the watchpoint number.
-        printf("Error: Invalid watchpoint number. Valid range is 0-31.\n");
-        return 0;
-    }
-
-    // Delete the specified watchpoint.
-    free_wp(wp_no);
-    printf("Watchpoint %d deleted.\n", wp_no);
+  char* arg = strtok(args, " ");
+  if(arg == NULL) {
+    printf("Too few args.\n");
     return 0;
+  }
+  if(strtok(NULL, " ") != NULL) {
+    printf("Too many args.\n");
+    return 0;
+  }
+  bool success;
+  int n = expr(arg, &success);
+  if (n<0 || n >= 32) {
+    printf("Only 32 watchpoints(No: 0-31) provided.\n");
+    return 0;
+  }
+  free_wp(n);
+  printf("Successfully delete watchpoint %d.\n", n);
+  return 0;
 }
 
 
