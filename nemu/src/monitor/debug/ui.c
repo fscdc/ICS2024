@@ -197,7 +197,6 @@ static int cmd_x(char* args) {
     bool success;
     int num = atoi(arg);
     
-
     arg = strtok(NULL, " ");
     if(arg == NULL) {
         printf("Error: Missing memory address.\n");
