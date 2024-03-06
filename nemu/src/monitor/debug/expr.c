@@ -288,7 +288,7 @@ bool check_parentheses(int start, int end) {
 
 
 int find_right_parenthese(int start, int end) {
-  int depth = 0; // Depth of nested parentheses
+  int depth = 1; // Depth of nested parentheses
   for (int i = start; i <= end; i++) {
     if (tokens[i].type == TK_LP) depth++;
     else if (tokens[i].type == TK_RP) {
