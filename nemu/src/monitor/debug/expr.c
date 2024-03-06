@@ -366,7 +366,7 @@ int find_operator(int p, int q) {
 
 int eval(int p, int q) {
   if (p > q) {
-   printf("Bad expression!\n");
+   //printf("Bad expression!\n");
    //printf("start: %d;end: %d.\n",p,q);
    return 0;
   }
@@ -404,7 +404,8 @@ int eval(int p, int q) {
   }
   else {
     int op = find_operator(p, q);// the position of dominant operator in the token expression
-   	int val1 = eval(p, op - 1);
+   	//printf("dom op:%d./n",op);
+    int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
     switch (tokens[op].type) {
       case TK_ADD: return val1 + val2;
