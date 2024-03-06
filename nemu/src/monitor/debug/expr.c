@@ -310,7 +310,7 @@ bool compare_priority(int op1, int op2) {
     return true;
   }
 
-  // Same for addition and subtraction
+  // Same for addition gdband subtraction
   if ((op1 == TK_ADD && op2 == TK_MIN) || (op1 == TK_MIN && op2 == TK_ADD)) {
     return true;
   }
@@ -367,6 +367,7 @@ int find_operator(int p, int q) {
 int eval(int p, int q) {
   if (p > q) {
    printf("Bad expression!\n");
+   printf("start: %d;end: %d.\n",p,q);
    return 0;
   }
   else if (p == q) {
