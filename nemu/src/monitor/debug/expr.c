@@ -37,8 +37,8 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},
-    {"[1-9][0-9]*|0", TK_DEC}, // dec
   {"0x[0-9a-fA-F]+", TK_HEX}, // hex
+  {"[1-9][0-9]*|0", TK_DEC}, // dec
   {"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip|ax|cx|dx|bx|sp|bp|si|di|al|cl|dl|bl|ah|ch|dh|bh)", TK_REG}, // register
   {"\\+", TK_ADD},      // plus
   {"-", TK_MIN},        // minus
@@ -97,8 +97,7 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
