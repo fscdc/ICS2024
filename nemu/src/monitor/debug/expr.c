@@ -367,7 +367,7 @@ int find_operator(int p, int q) {
 int eval(int p, int q) {
   if (p > q) {
    printf("Bad expression!\n");
-   printf("start: %d;end: %d.\n",p,q);
+   //printf("start: %d;end: %d.\n",p,q);
    return 0;
   }
   else if (p == q) {
@@ -479,6 +479,6 @@ uint32_t expr(char *e, bool *success) {
   }
 
   *success = true;
-  printf("Num of tokens:%d\n",nr_token);
+  //printf("Num of tokens:%d\n",nr_token);
   return eval(0, nr_token-1);
 }
