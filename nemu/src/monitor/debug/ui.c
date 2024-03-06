@@ -195,11 +195,8 @@ static int cmd_x(char* args) {
     }
 
     bool success;
-    int num = expr(arg, &success); // Evaluates the expression for the number of locations.
-    if(!success) {
-        printf("Error: Invalid number of locations.\n");
-        return 0;
-    }
+    int num = atoi(arg);
+    
 
     arg = strtok(NULL, " ");
     if(arg == NULL) {
