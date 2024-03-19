@@ -422,11 +422,11 @@ int eval(int p, int q) {
       }
       case TK_OR: {
         if (val1 != 0 || val2 != 0) {
-          printf("1");
+          //printf("1");
           return true;
         }
         else {
-          printf("2");
+          //printf("2");
           return false;
         }
       }
