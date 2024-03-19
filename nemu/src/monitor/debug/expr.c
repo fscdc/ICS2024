@@ -404,11 +404,11 @@ int eval(int p, int q) {
   }
   else {
     int op = find_operator(p, q);// the position of dominant operator in the token expression
-   	printf("dom op:%d.\n",op);
+   	//printf("dom op:%d.\n",op);
     int val1 = eval(p, op - 1);
-    printf("val1:%d.\n",val1);
+    //printf("val1:%d.\n",val1);
     int val2 = eval(op + 1, q);
-    printf("val2:%d.\n",val2);
+    //printf("val2:%d.\n",val2);
     switch (tokens[op].type) {
       case TK_ADD: return val1 + val2;
       case TK_MIN: return val1 - val2;
