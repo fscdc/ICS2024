@@ -390,7 +390,7 @@ int eval(int p, int q) {
       for(int i = 0; i < 8; i++) {
         if (!strcmp(tmp1, regsb[i])) {return cpu.gpr[i%4]._8[i/4];}
       }
-      if (!strcmp(tmp, "eip")) {return cpu.eip;}
+      if (!strcmp(tokens[p].str, "eip")) {return cpu.eip;}
       else { 
         printf("Unknown register.\n"); 
         assert(0);
