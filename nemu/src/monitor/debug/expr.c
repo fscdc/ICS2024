@@ -426,6 +426,7 @@ int eval(int p, int q) {
           return true;
         }
         else {
+          printf("2");
           return false;
         }
       }
