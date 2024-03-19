@@ -466,20 +466,13 @@ uint32_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
 
   for (int i = 0; i < nr_token; i++) {
-    // Check if token is '-' or '*', which might have special meanings.
-    if (tokens[i].type == TK_MIN || tokens[i].type == TK_MUL) {
-      bool isStart = i == 0; // True if it's the start of the expression.
-      bool noNumericPrev = i > 0 && (tokens[i - 1].type != TK_DEC && tokens[i - 1].type != TK_HEX && tokens[i - 1].type != TK_REG);
-      bool noRPBeforeMul = tokens[i].type == TK_MUL && (i == 0 || tokens[i - 1].type != TK_RP);
-
-      // Change '-' to negation if it's at the start or not preceded by numeric or register token.
-      if (tokens[i].type == TK_MIN && (isStart || noNumericPrev)) {
-        tokens[i].type = TK_NEG; 
-      }
-      // Change '*' to pointer if it's at the start or not correctly preceded.
-      else if (tokens[i].type == TK_MUL && (isStart || (noNumericPrev && noRPBeforeMul))) {
-        tokens[i].type = TK_POI; 
-      }
+    if (tokens[i].type == TK_MIN && (i == 0 || (tokens[i - 1].type != TK_DEC && tokens[i - 1].type  != TK_HEX && tokens[i - 1].type  != TK_REG))) {
+        // diffrentiate the negative and minus
+	   	tokens[i].type = TK_NEG;
+    }
+    else if (tokens[i].type == TK_MUL && (i == 0 || (tokens[i - 1].type != TK_DEC && tokens[i - 1].type  != TK_HEX && tokens[i - 1].type  != TK_REG && tokens[i - 1].type != TK_RP))) {
+        // diffrentiate the pointer and multiply
+		tokens[i].type = TK_POI;
     }
   }
 
