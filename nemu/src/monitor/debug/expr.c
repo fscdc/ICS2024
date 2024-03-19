@@ -240,7 +240,7 @@ static bool make_token(char *e) {
           }
           case TK_OR: {
             Token t;
-            t.type = TK_EQ;
+            t.type = TK_OR;
             t.str[0] = '|';
             t.str[1] = '|';
             t.str[2] = '\0';
