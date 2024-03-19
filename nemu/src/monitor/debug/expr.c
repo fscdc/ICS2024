@@ -404,7 +404,7 @@ int eval(int p, int q) {
   }
   else {
     int op = find_operator(p, q);// the position of dominant operator in the token expression
-   	printf("dom op:%d./n",op);
+   	printf("dom op:%d.\n",op);
     int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
     switch (tokens[op].type) {
