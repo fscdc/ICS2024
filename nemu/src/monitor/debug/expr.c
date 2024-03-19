@@ -379,11 +379,11 @@ int eval(int p, int q) {
       res = atoi(tokens[p].str);
     }
     else if (tokens[p].type == TK_REG) {
-      char tmp[3] = {tokens[p].str[1], tokens[p].str[2], tokens[p].str[3]};
+      char tmp[4] = {tokens[p].str[1], tokens[p].str[2], tokens[p].str[3],'\0'};
       for(int i = 0; i < 8; i++) {
         if (!strcmp(tmp, regsl[i])) {return cpu.gpr[i]._32;}
       }
-      char tmp1[2] = {tokens[p].str[1], tokens[p].str[2]};
+      char tmp1[3] = {tokens[p].str[1], tokens[p].str[2],'\0'};
       for(int i = 0; i < 8; i++) {
         if (!strcmp(tmp1, regsw[i])) {return cpu.gpr[i]._16;}
       }
