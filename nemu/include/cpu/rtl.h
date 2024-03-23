@@ -232,4 +232,20 @@ static inline void rtl_is_sub_overthrow(rtlreg_t* dest, const rtlreg_t* arith_re
   }
 }
 
+static inline void rtl_is_add_overthrow(rtlreg_t* dest, const rtlreg_t* arith_res, const rtlreg_t* src1, const rtlreg_t* src2, int width) {
+  t2 = (*src1 >> (width * 8 - 1)) == 1 ? 1 : 0;
+  t3 = (*src2 >> (width * 8 - 1)) == 1 ? 1 : 0;
+  s0 = (*arith_res >> (width * 8 - 1) == 1 ? 1 : 0);
+  if (!(t2 ^ t3)) {
+    if (t2 ^ s0) {
+      *dest = 1;
+    }
+    else {
+      *dest = 0;
+    }
+  }
+  else {
+    *dest = 0;
+  }
+}
 #endif
