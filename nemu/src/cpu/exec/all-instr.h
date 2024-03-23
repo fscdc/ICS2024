@@ -60,3 +60,13 @@ make_EHelper(imul2);
 make_EHelper(imul3);
 make_EHelper(div);
 make_EHelper(idiv);
+
+
+// system.c
+make_EHelper(lidt);
+make_EHelper(iret);
+make_EHelper(int);
+make_EHelper(in);
+make_EHelper(out);
+make_EHelper(mov_cr2r);
+make_EHelper(mov_r2cr);
