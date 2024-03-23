@@ -7,6 +7,12 @@ make_EHelper(pop);
 make_EHelper(pusha);
 make_EHelper(popa);
 make_EHelper(lea);
+make_EHelper(movzx);
+make_EHelper(movsx);
+make_EHelper(cltd);
+make_EHelper(cwtl);
+make_EHelper(leave);
+
 
 //prefix.c
 make_EHelper(operand_size);
