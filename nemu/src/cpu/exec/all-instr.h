@@ -34,7 +34,7 @@ make_EHelper(shl);
 make_EHelper(shr);
 make_EHelper(setcc);
 make_EHelper(not);
-
+make_EHelper(rol);
 
 // control.c
 make_EHelper(jmp);
