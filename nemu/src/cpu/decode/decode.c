@@ -3,7 +3,7 @@
 
 /* shared by all helper functions */
 DecodeInfo decoding;
-rtlreg_t t0, t1, t2, t3;
+rtlreg_t t0, t1, t2, t3, s0, s1;
 const rtlreg_t tzero = 0;
 
 #define make_DopHelper(name) void concat(decode_op_, name) (vaddr_t *eip, Operand *op, bool load_val)
@@ -38,7 +38,10 @@ static inline make_DopHelper(SI) {
    *
    op->simm = ???
    */
-  TODO();
+  //todo-fsc
+  t0 = instr_fetch(eip, op->width);
+  rtl_sext(&t0, &t0, op->width);
+  op->simm = t0;
 
   rtl_li(&op->val, op->simm);
 
