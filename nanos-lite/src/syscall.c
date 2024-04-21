@@ -6,12 +6,11 @@ extern ssize_t fs_write(int fd, const void* buf, size_t len);
 uintptr_t sys_write(int fd, const void *buf, size_t count){
   uintptr_t i = 0;
   if(fd==1||fd==2){
-    for(;count>0;count--){
+    for(;i<count;i++){
       _putc(((char*)buf)[i]);
-      i++;
     }
   }
-  return 3;
+  return i;
 }
 
 _RegSet* do_syscall(_RegSet *r) {
