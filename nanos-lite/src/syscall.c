@@ -8,18 +8,18 @@ extern int fs_open(const char* pathname, int flags, int mode);
 extern int fs_close(int fd);
 extern off_t fs_lseek(int fd, off_t offset, int whence);
 
-uintptr_t sys_write(int fd, const void *buf, size_t count){
-  uintptr_t i = 0;
-  if(fd==1||fd==2){
-    for(;i<count;i++){
-      _putc(((char*)buf)[i]);
-    }
-  }
-  else{
-    return -1;
-  }
-  return i;
-}
+// uintptr_t sys_write(int fd, const void *buf, size_t count){
+//   uintptr_t i = 0;
+//   if(fd==1||fd==2){
+//     for(;i<count;i++){
+//       _putc(((char*)buf)[i]);
+//     }
+//   }
+//   else{
+//     return -1;
+//   }
+//   return i;
+// }
 
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
