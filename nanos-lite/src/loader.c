@@ -16,7 +16,6 @@ uintptr_t loader(_Protect *as, const char *filename) {
   // impl loader--fsc
   // ramdisk_read(DEFAULT_ENTRY, 0, get_ramdisk_size());
   // return (uintptr_t)DEFAULT_ENTRY;
-  printf("11111\n");
   int fd = fs_open(filename, 0, 0);
   printf("fd to open = %d\n", fd);
   fs_read(fd, DEFAULT_ENTRY, fs_filesz(fd));
