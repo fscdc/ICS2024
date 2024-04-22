@@ -39,10 +39,10 @@ size_t fs_filesz(int fd){
 }
 
 int fs_open(const char* pathname, int flags, int mode) {
-  printf("NR_FILES = %d\n", NR_FILES);
+  // printf("NR_FILES = %d\n", NR_FILES);
   printf("pathname = %s\n", pathname);
   for(int i = 0; i < NR_FILES; i++) {
-    printf("file_table[i].name = %s\n", file_table[i].name);
+    // printf("file_table[i].name = %s\n", file_table[i].name);
     if (strcmp(pathname, file_table[i].name) == 0){
       return i;
     }
