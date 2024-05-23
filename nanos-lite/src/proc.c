@@ -28,8 +28,18 @@ void load_prog(const char *filename) {
 
 // 0:pal, 1:hello, 2:videotest
 
+int current_game = 0;
 
-extern int current_game;
+void update_current_game(){
+	if(current_game == 0){
+		current_game = 1;
+	}else if(current_game == 1){
+		current_game = 0;
+	}else{
+		assert(0);
+	}
+}
+
 static int count=0;
 #define FREQ 52
 _RegSet* schedule(_RegSet *prev) {
