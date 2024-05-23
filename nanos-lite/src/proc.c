@@ -31,7 +31,7 @@ void load_prog(const char *filename) {
 
 extern int current_game;
 static int count=0;
-#define FREQ 520
+#define FREQ 52
 _RegSet* schedule(_RegSet *prev) {
   if(current!=NULL){
     current->tf=prev;
