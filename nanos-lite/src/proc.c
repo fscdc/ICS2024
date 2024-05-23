@@ -44,6 +44,7 @@ _RegSet* schedule(_RegSet *prev) {
   } else {
     count++;
     current = (current_game == 0 ? &pcb[0] : &pcb[2]);
+    Log("The current_game is %d", current_game);
   }
 
   _switch(&current->as);

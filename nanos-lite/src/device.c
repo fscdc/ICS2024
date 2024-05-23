@@ -24,7 +24,6 @@ size_t events_read(void *buf, size_t len) {
     sprintf(buf, "%s %s\n", keydown ? "kd":"ku", keyname[key]);
     if (key == 0xd && keydown) {
       current_game = 1 - current_game;
-      fs_lseek(5,0,0);
     }
   }
   if (strlen(buf) > len) {
