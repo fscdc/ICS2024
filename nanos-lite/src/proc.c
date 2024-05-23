@@ -26,8 +26,6 @@ void load_prog(const char *filename) {
   pcb[i].tf = _umake(&pcb[i].as, stack, stack, (void *)entry, NULL, NULL);
 }
 
-int count = 0;
-extern int current_game;
 _RegSet* schedule(_RegSet *prev) {
   if(current!=NULL){
     current->tf=prev;
