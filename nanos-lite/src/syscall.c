@@ -7,6 +7,7 @@ extern size_t fs_filesz(int fd);
 extern int fs_open(const char* pathname, int flags, int mode);
 extern int fs_close(int fd);
 extern off_t fs_lseek(int fd, off_t offset, int whence);
+extern int mm_brk(uint32_t new_brk);
 
 // uintptr_t sys_write(int fd, const void *buf, size_t count){
 //   uintptr_t i = 0;
@@ -38,7 +39,7 @@ _RegSet* do_syscall(_RegSet *r) {
         _halt(a[1]);
         break;
     case SYS_brk:
-      res = 0;
+      res = mm_brk(a[1]);
       break;
     case SYS_write: 
       res = fs_write(a[1], (void*)a[2], a[3]);

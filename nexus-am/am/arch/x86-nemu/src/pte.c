@@ -66,11 +66,41 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  PDE *pdir = p->ptr;
+  uint32_t pd_index = ((uint32_t)va) >> 22 & 0x3ff;
+  PTE *pt = NULL;
+  uint32_t pt_index = ((uint32_t)va) >> 12 & 0x3ff;
+  
+  if (pdir[pd_index] & PTE_P) {
+    pt = (PTE *)(pdir[pd_index] & ~0xfff);
+  } else {
+    pt = (PTE *)palloc_f();
+    pdir[pd_index] = ((uint32_t)pt & ~0xfff) | PTE_P;
+  }
+
+  pt[pt_index] = ((uint32_t)pa & ~0xfff) | PTE_P;
 }
 
 void _unmap(_Protect *p, void *va) {
+
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  uint32_t *ptr = ustack.end;
+  for (int i = 0; i < 8; i++) {
+	*ptr = 0x0; 
+  	 ptr--;
+  }
+  *ptr = 0x02 | FL_IF;
+  ptr--; 
+  *ptr = 0x8; 	          ptr--; //cs
+  *ptr = (uint32_t)entry; ptr--; //eip
+  *ptr = 0x0;             ptr--; //error code
+  *ptr = 0x81;            ptr--; //irq id
+  for (int i = 0; i < 8; i++) {
+	*ptr = 0x0;
+  	 ptr--;
+  }
+  ptr++;
+  return (_RegSet *)ptr;
 }

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "fs.h"
-
-#define DEFAULT_ENTRY ((void *)0x4000000)
+#include "memory.h"
+#define DEFAULT_ENTRY ((void *)0x8048000)
 
 extern void ramdisk_read(void* buf, off_t offset, size_t len);
 extern void ramdisk_write(const void* buf, off_t offset, size_t len);
@@ -16,10 +16,21 @@ uintptr_t loader(_Protect *as, const char *filename) {
   // impl loader--fsc
   // ramdisk_read(DEFAULT_ENTRY, 0, get_ramdisk_size());
   // return (uintptr_t)DEFAULT_ENTRY;
-  filename = "/bin/pal";
+  // filename = "/bin/pal";
+
   int fd = fs_open(filename, 0, 0);
-  printf("fd to open = %d\n", fd);
-  fs_read(fd, DEFAULT_ENTRY, fs_filesz(fd));
+  int bytes = fs_filesz(fd); 
+  Log("Load [%d] %s with size: %d", fd, filename, bytes);
+
+  void *pa,*va = DEFAULT_ENTRY;
+  while(bytes>0){
+  	pa = new_page(); 
+  	_map(as, va, pa);
+  	fs_read(fd, pa, PGSIZE); 
+
+  	va += PGSIZE;
+  	bytes -= PGSIZE;
+  }
   fs_close(fd);
   return (uintptr_t)DEFAULT_ENTRY;
 }
