@@ -29,9 +29,25 @@ void load_prog(const char *filename) {
 int count = 0;
 extern int current_game;
 _RegSet* schedule(_RegSet *prev) {
-  current->tf = prev;
+  if(current!=NULL){
+    current->tf=prev;
+  }
+  else{
+    current=&pcb[0];
+  }
+  static int count=0;
+  static const int freq=520;
 
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  if(current==&pcb[0]){
+    count++;
+  } else {
+    current=&pcb[0];
+  }
+
+  if(count==freq){
+    current = &pcb[1];
+    count = 0;
+  }
   
   _switch(&current->as);
   return current->tf;
