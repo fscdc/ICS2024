@@ -27,24 +27,25 @@ void load_prog(const char *filename) {
 }
 
 // 0:pal, 1:hello, 2:videotest
-extern int current_game ;
+
+
+extern int current_game;
+static int count=0;
+#define FREQ 520
 _RegSet* schedule(_RegSet *prev) {
   if(current!=NULL){
     current->tf=prev;
   }
-  else{
-    current=&pcb[0];
-  }
-  static int count=0;
-  static const int freq=520;
 
-  current = (current_game == 0 ? &pcb[0] : &pcb[2]);
-  count++;
-  if(count==freq){
+
+  if(count==FREQ){
     current = &pcb[1];
     count = 0;
+  } else {
+    count++;
+    current = (current_game == 0 ? &pcb[0] : &pcb[2]);
   }
-  
+
   _switch(&current->as);
   return current->tf;
 }
