@@ -26,6 +26,8 @@ void load_prog(const char *filename) {
   pcb[i].tf = _umake(&pcb[i].as, stack, stack, (void *)entry, NULL, NULL);
 }
 
+// 0:pal, 1:hello, 2:videotest
+extern int current_game ;
 _RegSet* schedule(_RegSet *prev) {
   if(current!=NULL){
     current->tf=prev;
@@ -36,12 +38,8 @@ _RegSet* schedule(_RegSet *prev) {
   static int count=0;
   static const int freq=520;
 
-  if(current==&pcb[0]){
-    count++;
-  } else {
-    current=&pcb[0];
-  }
-
+  current = (current_game == 0 ? &pcb[0] : &pcb[2]);
+  count++;
   if(count==freq){
     current = &pcb[1];
     count = 0;
