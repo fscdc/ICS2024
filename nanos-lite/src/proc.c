@@ -15,9 +15,9 @@ void load_prog(const char *filename) {
   uintptr_t entry = loader(&pcb[i].as, filename);
 
   // TODO: remove the following three lines after you have implemented _umake()
-  _switch(&pcb[i].as);
-  current = &pcb[i];
-  ((void (*)(void))entry)();
+  // _switch(&pcb[i].as);
+  // current = &pcb[i];
+  // ((void (*)(void))entry)();
 
   _Area stack;
   stack.start = pcb[i].stack;
@@ -26,6 +26,13 @@ void load_prog(const char *filename) {
   pcb[i].tf = _umake(&pcb[i].as, stack, stack, (void *)entry, NULL, NULL);
 }
 
+int count = 0;
+extern int current_game;
 _RegSet* schedule(_RegSet *prev) {
-  return NULL;
+  current->tf = prev;
+
+  current = &pcb[0];
+
+  _switch(&current->as);
+  return current->tf;
 }
