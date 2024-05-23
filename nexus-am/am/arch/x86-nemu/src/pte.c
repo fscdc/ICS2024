@@ -91,7 +91,7 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
 	*ptr = 0x0; 
   	 ptr--;
   }
-  *ptr = 0x02 || FL_IF; 	  ptr--; 
+  *ptr = 0x02 | FL_IF; 	  ptr--; 
   *ptr = 0x8; 	          ptr--; //cs
   *ptr = (uint32_t)entry; ptr--; //eip
   *ptr = 0x0;             ptr--; //error code
