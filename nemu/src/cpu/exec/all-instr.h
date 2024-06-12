@@ -35,6 +35,8 @@ make_EHelper(shr);
 make_EHelper(setcc);
 make_EHelper(not);
 make_EHelper(rol);
+make_EHelper(shld);
+make_EHelper(shrd);
 
 // control.c
 make_EHelper(jmp);
